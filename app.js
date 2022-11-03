@@ -24,7 +24,7 @@ console.log(twoSum(nums, target))
 let dup = [3, 7, 1, 1]
 
 const contains = (dup) => {
-    const set = new Set()
+    let set = new Set()
     for(let i = 0; i < dup.length; ++i){
         if(set.has(dup[i])){
             return true
@@ -35,3 +35,49 @@ const contains = (dup) => {
 }
 
 console.log(contains(dup))
+
+// MAXIMUM SUBARRAY
+
+let numbers = [-2, 1, -3, 4, -1, 2, -5, 0]
+
+const maxSub = (numbers) => {
+    let maxSum = numbers[0]
+    let sum = 0
+    for(let i = 0; i < numbers.length; ++i){
+        if(sum < 0){
+            sum = 0
+        }
+        sum += numbers[i]
+        if(maxSum < sum){
+            maxSum = sum
+        }
+    }
+    return maxSum
+}
+
+console.log(maxSub(numbers))
+
+// TWO SORTED SUM
+
+let joke = [1, 3, 4, 5, 7, 11]
+let solution = 11
+
+const twoSorted = (joke, solution) => {
+    let left = 0
+    let right = joke.length - 1
+    while(left < right){
+        let sum = joke[left] + joke[right]
+        if(sum < solution){
+            left++
+        }
+        if(sum > solution){
+            right--
+        }
+        if(sum === solution){
+            return [left, right]
+        }
+    }
+}
+
+console.log(twoSorted(joke, solution))
+
