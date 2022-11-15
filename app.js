@@ -6,15 +6,15 @@ let nums = [1, 2, 4, 9]
 let target = 13
 
 const twoSum = (nums, target) => {
-    const differenceIndex = new Map()
+    const numMap = new Map()
     for(let i = 0; i < nums.length; ++i){
-        if(differenceIndex.has(nums[i])){
-            return [differenceIndex.get(nums[i]), i]
+        if(numMap.has(nums[i])){
+            return [numMap.get(nums[i]), i]
         }
-        const difference = target - nums[i]
-        differenceIndex.set(difference, i)
+        let difference = target - nums[i]
+        numMap.set(difference, i)
     }
-    return differenceIndex
+    return numMap
 }
 
 console.log(twoSum(nums, target))
@@ -24,7 +24,7 @@ console.log(twoSum(nums, target))
 let dup = [3, 7, 1, 1]
 
 const contains = (dup) => {
-    let set = new Set()
+    const set = new Set()
     for(let i = 0; i < dup.length; ++i){
         if(set.has(dup[i])){
             return true
@@ -67,11 +67,11 @@ const twoSorted = (joke, solution) => {
     let right = joke.length - 1
     while(left < right){
         let sum = joke[left] + joke[right]
-        if(sum < solution){
-            left++
-        }
         if(sum > solution){
             right--
+        }
+        if(sum < solution){
+            left++
         }
         if(sum === solution){
             return [left, right]
@@ -90,7 +90,7 @@ const stocks = (prices) => {
     let right = 1
     let maxProfit = 0
     while(right < prices.length){
-        const profit = prices[right] - prices[left]
+        let profit = prices[right] - prices[left]
         if(profit > 0){
             maxProfit = Math.max(maxProfit, profit)
         }
@@ -109,14 +109,14 @@ let three = [-1, 0, 1, 2, -1, -4]
 const threeSum = (three) => {
     three.sort((a, b) => a - b)
     const results = []
-    for(let i =0; i < three.length - 2; ++i){
+    for(let i = 0; i< three.length; ++i){
         if(three[i] === three[i - 1]){
             continue
         }
         let left = i + 1
         let right = three.length - 1
         while(left < right){
-            const sum = three[i] + three[left] + three[right]
+            let sum = three[i] + three[left] + three[right]
             if(sum > 0){
                 right--
             }
@@ -126,7 +126,7 @@ const threeSum = (three) => {
             if(sum === 0){
                 results.push([three[i], three[left], three[right]])
                 left++
-                while(three[left] === three[left - 1] && left < right){
+                while(left === left - 1 && left < right){
                     left++
                 }
             }
@@ -144,11 +144,11 @@ let self = [3, 2, 6, 1]
 const product = (self) => {
     const results = []
     results[0] = 1
-    for(let i = 1; i < self.length - 1; ++i){
+    for(let i = 1; i < self.length; ++i){
         results[i] = results[i - 1] * self[i - 1]
     }
     let right = 1
-    for(let i = self.length - 1; i >= 0; --i){
+    for(let i = self.length - 1; i > 0; --i){
         results[i] = results[i] * right
         right *= self[i]
     }
@@ -156,13 +156,13 @@ const product = (self) => {
     return results
 }
 
- console.log(product(self))
+console.log(product(self))
 
 // MEETING TIMES
 
-let times = [[10, 15], [20, 25], [30, 35]]
+let times = [[10, 15], [12, 25], [30, 35]]
 
-const meetings = (times) => {
+const meeting = (times) => {
     times.sort((a, b) => a[0] - b[0])
     for(let i = 1; i < times.length; ++i){
         const start = times[i][0]
@@ -174,7 +174,7 @@ const meetings = (times) => {
     return true
 }
 
-console.log(meetings(times))
+console.log(meeting(times))
 
 // BINARY SEARCH
 
@@ -189,12 +189,11 @@ const binary = (search, answer) => {
         if(search[mid] > answer){
             right = mid - 1
         }
-        else if(search[mid] < answer){
+        if(search[mid] < answer){
             left = mid + 1
         }
         else return mid
     }
-    return "not found"
 }
 
 console.log(binary(search, answer))
@@ -203,7 +202,7 @@ console.log(binary(search, answer))
 
 let array = [7, 9, 12, 1, 4]
 
-const rotated = (array) => {
+const minimum = (array) => {
     let left = 0
     let right = array.length - 1
     while(left < right){
@@ -216,17 +215,17 @@ const rotated = (array) => {
     return array[left]
 }
 
-console.log(rotated(array))
+console.log(minimum(array))
 
 // SEARCH IN ROTATED SORTED ARRAY
 
 let shiv = [8, 9, 1, 2, 3, 4, 5, 6, 7]
 let kive = 5
 
-const searchRotated = (shiv, kive) => {
+const rotated = (shiv, kive) => {
     let left = 0
     let right = shiv.length - 1
-    while(left < right){
+    while (left < right){
         let mid = Math.floor((left + right) / 2)
         if(shiv[mid] === kive){
             return mid
@@ -235,36 +234,33 @@ const searchRotated = (shiv, kive) => {
             if(kive < shiv[mid] || kive > shiv[right]){
                 right = mid - 1
             }
-            else{
-                left = mid + 1
-            }
+            else left = mid + 1
         }
         else{
             if(kive > shiv[mid] || kive < shiv[left]){
                 left = mid + 1
             }
-            else{
-                right = mid - 1
-            }
+            else right = mid - 1
         }
     }
+    return "not found"
 }
 
-console.log(searchRotated(shiv, kive))
+console.log(rotated(shiv, kive))
 
 // CONTAINER WITH MOST WATER
 
-let heights = [6, 4, 0, 5, 4, 7, 2, 5]
+let water = [1, 5, 6, 3, 4, 2]
 
-const maxWater = (heights) => {
+const container = (water) => {
     let left = 0
-    let right = heights.length - 1
+    let right = water.length - 1
     let maxArea = 0
     while(left < right){
         let width = right - left
-        let height = Math.min(heights[left], heights[right])
+        let height = Math.min(water[left], water[right])
         let area = width * height
-        if(heights[left] < heights[right]){
+        if(water[left] < water[right]){
             left++
         }
         else{
@@ -277,25 +273,25 @@ const maxWater = (heights) => {
     return maxArea
 }
 
-console.log(maxWater(heights))
+console.log(container(water))
 
 // FLATTEN ARRAY
 
 let it = [1, 2, 3, 4, [4, 5, [6, 7]]]
 
 const flatten = (it) => {
-    let results = []
-    const flattenHelper = (it) => {
+    const results = []
+    const helper = (it) => {
         for(elem of it){
             if(Array.isArray(elem)){
-                flattenHelper(elem)
+                helper(elem)
             }
             else{
                 results.push(elem)
             }
         }
     }
-    flattenHelper(it)
+    helper(it)
     return results
 }
 
@@ -307,9 +303,9 @@ let zeros = [0, 6, 0, 4, 8]
 
 const move = (zeros) => {
     let left = 0
-    let right = 0
-        while(right < zeros.length){
-            if(zeros[right] !== 0){
+    let right = 1
+    while(right < zeros.length){
+        if(zeros[right] !== 0){
             let temp = zeros[right]
             zeros[right] = zeros[left]
             zeros[left] = temp
@@ -328,17 +324,17 @@ let nums1 = [1, 2, 3]
 let nums2 = [5, 2]
 let added = 8
 
-const sumOfTwo = (nums1, nums2, added) => {
+const sumTwo = (nums1, nums2, added) => {
     const set = new Set()
-    for(number of nums1){
-        set.add(added - number)
+    for(let elem of nums1){
+        set.add(added - elem)
     }
-    for(number of nums2){
-        if(set.has(number)){
+    for(let elem of nums2){
+        if(set.has(elem)){
             return true
         }
     }
     return false
 }
 
-console.log(sumOfTwo(nums1, nums2, added))
+console.log(sumTwo(nums1, nums2, added))
